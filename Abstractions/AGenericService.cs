@@ -1,6 +1,6 @@
 ﻿namespace BaseUtility
 {
-    internal class AGenericService<TDto, TDatabase, TKey> : IService<TDto, TKey>
+    public class AGenericService<TDto, TDatabase, TKey> : IService<TDto, TKey>
         where TDto : class, IEntity<TKey>
         where TDatabase : class, IEntity<TKey>
         where TKey : notnull
