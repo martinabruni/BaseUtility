@@ -6,8 +6,8 @@
 		<Nullable>enable</Nullable>
 		<PackageId>BaseUtility</PackageId>
 		<Version>1.0.1</Version>
-		<Authors>YourName</Authors>
-		<Company>YourCompany</Company>
+		<Authors>Martina</Authors>
+		<Company>Author</Company>
 		<Description>Base utility library for .NET 8 projects.</Description>
 		<PackageOutputPath>..\NuGets</PackageOutputPath>
 
