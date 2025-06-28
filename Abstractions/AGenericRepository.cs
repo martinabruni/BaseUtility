@@ -7,8 +7,8 @@ namespace BaseUtility
         where TKey : notnull
         where TContext : DbContext
     {
-        private readonly IDatabase<TContext> _db;
-        private readonly DbSet<TEntity> _dbSet;
+        protected readonly IDatabase<TContext> _db;
+        protected readonly DbSet<TEntity> _dbSet;
 
         public AGenericRepository(IDatabase<TContext> db)
         {

@@ -5,9 +5,9 @@
         where TDatabase : class, IEntity<TKey>
         where TKey : notnull
     {
-        private readonly IRepository<TDatabase, TKey> _repository;
-        private readonly IMapper<TDatabase, TDto> _databaseToDtoMapper;
-        private readonly IMapper<TDto, TDatabase> _dtoToDatabaseMapper;
+        protected readonly IRepository<TDatabase, TKey> _repository;
+        protected readonly IMapper<TDatabase, TDto> _databaseToDtoMapper;
+        protected readonly IMapper<TDto, TDatabase> _dtoToDatabaseMapper;
 
         public AGenericService(IRepository<TDatabase, TKey> repository, IMapper<TDatabase, TDto> databaseToDtoMapper, IMapper<TDto, TDatabase> dtoToDatabaseMapper)
         {
