@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace BaseUtility
 {
@@ -28,6 +29,13 @@ namespace BaseUtility
             }
             try
             {
+                var local = _dbSet.Local.FirstOrDefault(e => EqualityComparer<TKey>.Default.Equals(e.Id, entity.Id));
+                if (local != null)
+                {
+                    _db.Context.Entry(local).State = EntityState.Detached;
+                }
+
+                await _dbSet.AddAsync(entity);
                 await _dbSet.AddAsync(entity);
                 await _db.Context.SaveChangesAsync();
                 return new RepositoryResponse<TEntity>
@@ -87,7 +95,7 @@ namespace BaseUtility
             }
         }
 
-        public virtual async Task<RepositoryResponse<IEnumerable<TEntity>>> FindAsync(Func<TEntity, bool> predicate)
+        public virtual async Task<RepositoryResponse<IEnumerable<TEntity>>> FindAsync(Expression<Func<TEntity, bool>> predicate)
         {
             if (predicate is null)
             {

@@ -5,7 +5,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<PackageId>BaseUtility</PackageId>
-		<Version>1.0.3</Version>
+		<Version>1.0.4</Version>
 		<Authors>Martina</Authors>
 		<Company>Author</Company>
 		<Description>Base utility library for .NET 8 projects.</Description>
