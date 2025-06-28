@@ -16,7 +16,7 @@
             _dtoToDatabaseMapper = dtoToDatabaseMapper;
         }
 
-        public async Task<BusinessResponse<TDto>> CreateAsync(TDto dto)
+        public virtual async Task<BusinessResponse<TDto>> CreateAsync(TDto dto)
         {
             if (dto is null)
             {
@@ -48,7 +48,7 @@
             };
         }
 
-        public async Task<BusinessResponse<TDto>> DeleteAsync(TKey id)
+        public virtual async Task<BusinessResponse<TDto>> DeleteAsync(TKey id)
         {
             if (id is null)
             {
@@ -76,7 +76,7 @@
             };
         }
 
-        public async Task<BusinessResponse<IEnumerable<TDto>>> FindAsync(Func<TDto, bool> predicate)
+        public virtual async Task<BusinessResponse<IEnumerable<TDto>>> FindAsync(Func<TDto, bool> predicate)
         {
             if (predicate is null)
             {
@@ -117,7 +117,7 @@
             };
         }
 
-        public async Task<BusinessResponse<IEnumerable<TDto>>> GetAllAsync()
+        public virtual async Task<BusinessResponse<IEnumerable<TDto>>> GetAllAsync()
         {
             var response = await _repository.GetAllAsync();
             if (response.Data is null)
@@ -148,7 +148,7 @@
             };
         }
 
-        public async Task<BusinessResponse<TDto>> GetByIdAsync(TKey id)
+        public virtual async Task<BusinessResponse<TDto>> GetByIdAsync(TKey id)
         {
             if (id is null)
             {
@@ -176,7 +176,7 @@
             };
         }
 
-        public async Task<BusinessResponse<TDto>> UpdateAsync(TDto dto)
+        public virtual async Task<BusinessResponse<TDto>> UpdateAsync(TDto dto)
         {
             if (dto is null)
             {

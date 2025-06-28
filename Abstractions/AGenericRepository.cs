@@ -16,7 +16,7 @@ namespace BaseUtility
             _dbSet = _db.Context.Set<TEntity>();
         }
 
-        public async Task<RepositoryResponse<TEntity>> CreateAsync(TEntity entity)
+        public virtual async Task<RepositoryResponse<TEntity>> CreateAsync(TEntity entity)
         {
             if (entity is null)
             {
@@ -47,7 +47,7 @@ namespace BaseUtility
             }
         }
 
-        public async Task<RepositoryResponse<TEntity>> DeleteAsync(TKey id)
+        public virtual async Task<RepositoryResponse<TEntity>> DeleteAsync(TKey id)
         {
             if (id is null)
             {
@@ -87,7 +87,7 @@ namespace BaseUtility
             }
         }
 
-        public async Task<RepositoryResponse<IEnumerable<TEntity>>> FindAsync(Func<TEntity, bool> predicate)
+        public virtual async Task<RepositoryResponse<IEnumerable<TEntity>>> FindAsync(Func<TEntity, bool> predicate)
         {
             if (predicate is null)
             {
@@ -117,7 +117,7 @@ namespace BaseUtility
             }
         }
 
-        public async Task<RepositoryResponse<IEnumerable<TEntity>>> GetAllAsync()
+        public virtual async Task<RepositoryResponse<IEnumerable<TEntity>>> GetAllAsync()
         {
             try
             {
@@ -139,7 +139,7 @@ namespace BaseUtility
             }
         }
 
-        public async Task<RepositoryResponse<TEntity>> GetByIdAsync(TKey id)
+        public virtual async Task<RepositoryResponse<TEntity>> GetByIdAsync(TKey id)
         {
             if (id is null)
             {
@@ -177,7 +177,7 @@ namespace BaseUtility
             }
         }
 
-        public async Task<RepositoryResponse<TEntity>> UpdateAsync(TEntity entity)
+        public virtual async Task<RepositoryResponse<TEntity>> UpdateAsync(TEntity entity)
         {
             if (entity is null)
             {
