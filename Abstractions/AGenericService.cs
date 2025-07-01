@@ -1,6 +1,8 @@
-﻿namespace BaseUtility
+﻿using System.Linq.Expressions;
+
+namespace BaseUtility
 {
-    public class AGenericService<TDto, TDatabase, TKey> : IService<TDto, TKey>
+    public class AGenericService<TDto, TDatabase, TKey> : IService<TDto, TDatabase, TKey>
         where TDto : class, IEntity<TKey>
         where TDatabase : class, IEntity<TKey>
         where TKey : notnull
@@ -76,7 +78,7 @@
             };
         }
 
-        public virtual async Task<BusinessResponse<IEnumerable<TDto>>> FindAsync(Func<TDto, bool> predicate)
+        public virtual async Task<BusinessResponse<IEnumerable<TDto>>> FindAsync(Expression<Func<TDatabase, bool>> predicate)
         {
             if (predicate is null)
             {
@@ -86,7 +88,7 @@
                     Message = "Predicate cannot be null."
                 };
             }
-            var response = await _repository.FindAsync(dto => predicate(_databaseToDtoMapper.Map(dto)));
+            var response = await _repository.FindAsync(predicate);
             if (response.Data is null)
             {
                 return new BusinessResponse<IEnumerable<TDto>>
