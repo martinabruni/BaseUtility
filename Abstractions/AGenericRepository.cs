@@ -36,7 +36,6 @@ namespace BaseUtility
                 }
 
                 await _dbSet.AddAsync(entity);
-                await _dbSet.AddAsync(entity);
                 await _db.Context.SaveChangesAsync();
                 return new RepositoryResponse<TEntity>
                 {
