@@ -17,6 +17,16 @@ namespace BaseUtility
             _dbSet = _db.Context.Set<TEntity>();
         }
 
+        private void EnsureNotTracked(TEntity entity)
+        {
+            var local = _dbSet.Local.FirstOrDefault(e => EqualityComparer<TKey>.Default.Equals(e.Id, entity.Id));
+            if (local != null && !ReferenceEquals(local, entity))
+            {
+                // Detach the local instance if it's not the same as the incoming entity
+                _db.Context.Entry(local).State = EntityState.Detached;
+            }
+        }
+
         public virtual async Task<RepositoryResponse<TEntity>> CreateAsync(TEntity entity)
         {
             if (entity is null)
@@ -29,12 +39,7 @@ namespace BaseUtility
             }
             try
             {
-                var local = _dbSet.Local.FirstOrDefault(e => EqualityComparer<TKey>.Default.Equals(e.Id, entity.Id));
-                if (local != null)
-                {
-                    _db.Context.Entry(local).State = EntityState.Detached;
-                }
-
+                EnsureNotTracked(entity);
                 await _dbSet.AddAsync(entity);
                 await _db.Context.SaveChangesAsync();
                 return new RepositoryResponse<TEntity>
@@ -196,6 +201,7 @@ namespace BaseUtility
             }
             try
             {
+                EnsureNotTracked(entity);
                 _dbSet.Update(entity);
                 await _db.Context.SaveChangesAsync();
                 return new RepositoryResponse<TEntity>
