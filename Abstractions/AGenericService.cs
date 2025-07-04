@@ -28,7 +28,7 @@ namespace BaseUtility
         {
             if (dto is null)
             {
-                return BusinessResponse<TDto>.BadRequest(_messages.EntityCannotBeNull);
+                return BusinessResponse<TDto>.BadRequest(_messages.InvalidRequest);
             }
 
             var repositoryRes = await _repository.CreateAsync(_dtoToDatabaseMapper.Map(dto));
@@ -45,7 +45,7 @@ namespace BaseUtility
         {
             if (id is null)
             {
-                return BusinessResponse<TDto>.BadRequest(_messages.IdCannotBeNull);
+                return BusinessResponse<TDto>.BadRequest(_messages.InvalidRequest);
             }
 
             var repositoryRes = await _repository.DeleteAsync(id);
@@ -62,7 +62,7 @@ namespace BaseUtility
         {
             if (predicate is null)
             {
-                return BusinessResponse<IEnumerable<TDto>>.BadRequest(_messages.PredicateCannotBeNull);
+                return BusinessResponse<IEnumerable<TDto>>.BadRequest(_messages.InvalidRequest);
             }
 
             var repositoryRes = await _repository.FindAsync(predicate);
@@ -101,7 +101,7 @@ namespace BaseUtility
         {
             if (id is null)
             {
-                return BusinessResponse<TDto>.BadRequest(_messages.IdCannotBeNull);
+                return BusinessResponse<TDto>.BadRequest(_messages.InvalidRequest);
             }
 
             var repositoryRes = await _repository.GetByIdAsync(id);
@@ -118,7 +118,7 @@ namespace BaseUtility
         {
             if (dto is null)
             {
-                return BusinessResponse<TDto>.BadRequest(_messages.EntityCannotBeNull);
+                return BusinessResponse<TDto>.BadRequest(_messages.InvalidRequest);
             }
 
             var repositoryRes = await _repository.UpdateAsync(_dtoToDatabaseMapper.Map(dto));

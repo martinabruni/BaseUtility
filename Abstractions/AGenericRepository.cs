@@ -32,7 +32,7 @@ namespace BaseUtility
         {
             if (entity is null)
             {
-                return RepositoryResponse<TEntity>.BadRequest(_messages.EntityCannotBeNull);
+                return RepositoryResponse<TEntity>.BadRequest(_messages.InvalidRequest);
             }
             try
             {
@@ -51,14 +51,14 @@ namespace BaseUtility
         {
             if (id is null)
             {
-                return RepositoryResponse<TEntity>.BadRequest(_messages.IdCannotBeNull);
+                return RepositoryResponse<TEntity>.BadRequest(_messages.InvalidRequest);
             }
             try
             {
                 var entity = await _dbSet.FindAsync(id);
                 if (entity is null)
                 {
-                    return RepositoryResponse<TEntity>.BadRequest(_messages.EntityCannotBeNull);
+                    return RepositoryResponse<TEntity>.BadRequest(_messages.InvalidRequest);
                 }
                 _dbSet.Remove(entity);
                 await _db.Context.SaveChangesAsync();
@@ -70,20 +70,20 @@ namespace BaseUtility
             }
         }
 
-        public virtual async Task<RepositoryResponse<IEnumerable<TEntity>>> FindAsync(Expression<Func<TEntity, bool>> predicate)
+        public virtual Task<RepositoryResponse<IEnumerable<TEntity>>> FindAsync(Expression<Func<TEntity, bool>> predicate)
         {
             if (predicate is null)
             {
-                return RepositoryResponse<IEnumerable<TEntity>>.BadRequest(_messages.PredicateCannotBeNull);
+                return Task.FromResult(RepositoryResponse<IEnumerable<TEntity>>.BadRequest(_messages.InvalidRequest));
             }
             try
             {
                 var entities = _dbSet.Where(predicate).ToList();
-                return RepositoryResponse<IEnumerable<TEntity>>.Ok(_messages.EntitiesRetrievedSuccessfully, entities);
+                return Task.FromResult(RepositoryResponse<IEnumerable<TEntity>>.Ok(_messages.EntitiesRetrievedSuccessfully, entities));
             }
             catch
             {
-                return RepositoryResponse<IEnumerable<TEntity>>.InternalServerError(_messages.ErrorFindingEntities);
+                return Task.FromResult(RepositoryResponse<IEnumerable<TEntity>>.InternalServerError(_messages.ErrorFindingEntities));
             }
         }
 
@@ -104,7 +104,7 @@ namespace BaseUtility
         {
             if (id is null)
             {
-                return RepositoryResponse<TEntity>.BadRequest(_messages.IdCannotBeNull);
+                return RepositoryResponse<TEntity>.BadRequest(_messages.InvalidRequest);
             }
             try
             {
@@ -125,7 +125,7 @@ namespace BaseUtility
         {
             if (entity is null)
             {
-                return RepositoryResponse<TEntity>.BadRequest(_messages.EntityCannotBeNull);
+                return RepositoryResponse<TEntity>.BadRequest(_messages.InvalidRequest);
             }
             try
             {
