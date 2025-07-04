@@ -12,5 +12,14 @@
                 StatusCode = (BusinessCode) repositoryResponse.StatusCode
             };
         }
+        public static BusinessResponse<TData> ToBusinessResponse<TData>(this RepositoryResponse<TData> repositoryResponse)
+            where TData : class
+        {
+            return new BusinessResponse<TData>
+            {
+                Message = repositoryResponse.Message,
+                StatusCode = (BusinessCode)repositoryResponse.StatusCode
+            };
+        }
     }
 }
