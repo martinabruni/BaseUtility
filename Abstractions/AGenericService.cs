@@ -32,13 +32,8 @@ namespace BaseUtility
             }
 
             var repositoryRes = await _repository.CreateAsync(_dtoToDatabaseMapper.Map(dto));
-            if (repositoryRes.Data is null)
-            {
-                return BusinessResponse<TDto>.InternalServerError(_messages.ErrorCreatingEntity);
-            }
 
-            var mappedDto = _databaseToDtoMapper.Map(repositoryRes.Data);
-            return BusinessResponse<TDto>.Created(_messages.EntityCreatedSuccessfully, mappedDto);
+            return repositoryRes.ToBusinessResponse(_databaseToDtoMapper);
         }
 
         public virtual async Task<BusinessResponse<TDto>> DeleteAsync(TKey id)
@@ -49,13 +44,7 @@ namespace BaseUtility
             }
 
             var repositoryRes = await _repository.DeleteAsync(id);
-            if (repositoryRes.Data is null)
-            {
-                return BusinessResponse<TDto>.InternalServerError(_messages.ErrorDeletingEntity);
-            }
-
-            var mappedDto = _databaseToDtoMapper.Map(repositoryRes.Data);
-            return BusinessResponse<TDto>.Ok(_messages.EntityDeletedSuccessfully, mappedDto);
+            return repositoryRes.ToBusinessResponse(_databaseToDtoMapper);
         }
 
         public virtual async Task<BusinessResponse<IEnumerable<TDto>>> FindAsync(Expression<Func<TDatabase, bool>> predicate)
@@ -66,35 +55,13 @@ namespace BaseUtility
             }
 
             var repositoryRes = await _repository.FindAsync(predicate);
-            if (repositoryRes.Data is null)
-            {
-                return BusinessResponse<IEnumerable<TDto>>.InternalServerError(_messages.ErrorFindingEntities);
-            }
-
-            var dtos = repositoryRes.Data.Select(_databaseToDtoMapper.Map).ToList();
-            if (dtos.Count == 0)
-            {
-                return BusinessResponse<IEnumerable<TDto>>.Ok(_messages.EntitiesRetrievedSuccessfully, []);
-            }
-
-            return BusinessResponse<IEnumerable<TDto>>.Ok(_messages.EntitiesRetrievedSuccessfully, dtos);
+            return repositoryRes.ToBusinessResponse(_databaseToDtoMapper);
         }
 
         public virtual async Task<BusinessResponse<IEnumerable<TDto>>> GetAllAsync()
         {
             var repositoryRes = await _repository.GetAllAsync();
-            if (repositoryRes.Data is null)
-            {
-                return BusinessResponse<IEnumerable<TDto>>.InternalServerError(_messages.ErrorRetrievingEntities);
-            }
-
-            var dtos = repositoryRes.Data.Select(_databaseToDtoMapper.Map).ToList();
-            if (dtos.Count == 0)
-            {
-                return BusinessResponse<IEnumerable<TDto>>.Ok(_messages.EntitiesRetrievedSuccessfully, []);
-            }
-
-            return BusinessResponse<IEnumerable<TDto>>.Ok(_messages.EntitiesRetrievedSuccessfully, dtos);
+            return repositoryRes.ToBusinessResponse(_databaseToDtoMapper);
         }
 
         public virtual async Task<BusinessResponse<TDto>> GetByIdAsync(TKey id)
@@ -105,13 +72,7 @@ namespace BaseUtility
             }
 
             var repositoryRes = await _repository.GetByIdAsync(id);
-            if (repositoryRes.Data is null)
-            {
-                return BusinessResponse<TDto>.NotFound(_messages.EntityNotFound);
-            }
-
-            var mappedDto = _databaseToDtoMapper.Map(repositoryRes.Data);
-            return BusinessResponse<TDto>.Ok(_messages.EntityRetrievedSuccessfully, mappedDto);
+            return repositoryRes.ToBusinessResponse(_databaseToDtoMapper);
         }
 
         public virtual async Task<BusinessResponse<TDto>> UpdateAsync(TDto dto)
@@ -122,13 +83,7 @@ namespace BaseUtility
             }
 
             var repositoryRes = await _repository.UpdateAsync(_dtoToDatabaseMapper.Map(dto));
-            if (repositoryRes.Data is null)
-            {
-                return BusinessResponse<TDto>.InternalServerError(_messages.ErrorUpdatingEntity);
-            }
-
-            var mappedDto = _databaseToDtoMapper.Map(repositoryRes.Data);
-            return BusinessResponse<TDto>.Ok(_messages.EntityUpdatedSuccessfully, mappedDto);
+            return repositoryRes.ToBusinessResponse(_databaseToDtoMapper);
         }
     }
 }

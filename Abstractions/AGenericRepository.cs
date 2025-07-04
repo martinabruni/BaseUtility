@@ -58,7 +58,7 @@ namespace BaseUtility
                 var entity = await _dbSet.FindAsync(id);
                 if (entity is null)
                 {
-                    return RepositoryResponse<TEntity>.BadRequest(_messages.InvalidRequest);
+                    return RepositoryResponse<TEntity>.NotFound(_messages.InvalidRequest);
                 }
                 _dbSet.Remove(entity);
                 await _db.Context.SaveChangesAsync();
