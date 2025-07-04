@@ -26,6 +26,12 @@
             Data = data
         };
 
+        public static RepositoryResponse<TData> OkWithoutData(string? message = null) => new RepositoryResponse<TData>
+        {
+            StatusCode = RepositoryCode.Ok,
+            Message = message,
+        };
+
         public static RepositoryResponse<TData> NotFound(string? message = null) => new RepositoryResponse<TData>
         {
             StatusCode = RepositoryCode.NotFound,
