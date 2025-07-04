@@ -38,5 +38,11 @@
             StatusCode = BusinessCode.InternalServerError,
             Message = message,
         };
+
+        public static BusinessResponse<TData> Unauthorize(string? message = null) => new BusinessResponse<TData>
+        {
+            StatusCode = BusinessCode.Unauthorized,
+            Message = message,
+        };
     }
 }
