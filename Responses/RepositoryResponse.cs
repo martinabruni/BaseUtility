@@ -40,5 +40,11 @@
             Message = message,
             Data = data
         };
+
+        public static RepositoryResponse<TData> Unauthorize(string? message = null) => new RepositoryResponse<TData>
+        {
+            StatusCode = RepositoryCode.Unauthorized,
+            Message = message,
+        };
     }
 }

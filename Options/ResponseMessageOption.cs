@@ -14,5 +14,6 @@ namespace BaseUtility
         public string ErrorRetrievingEntity { get; set; } = $"Error retrieving {entityName}";
         public string EntityUpdatedSuccessfully { get; set; } = $"{entityName} updated successfully.";
         public string ErrorUpdatingEntity { get; set; } = $"Error updating {entityName}";
+        public string InvalidCredentials { get; set; } = "Invalid credentials provided.";
     }
 }
