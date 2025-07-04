@@ -10,11 +10,13 @@ namespace BaseUtility
     {
         protected readonly IDatabase<TContext> _db;
         protected readonly DbSet<TEntity> _dbSet;
+        protected readonly ResponseMessageOption _messages;
 
-        public AGenericRepository(IDatabase<TContext> db)
+        public AGenericRepository(IDatabase<TContext> db, ResponseMessageOption messages)
         {
             _db = db;
             _dbSet = _db.Context.Set<TEntity>();
+            _messages = messages;
         }
 
         private void EnsureNotTracked(TEntity entity)
@@ -22,7 +24,6 @@ namespace BaseUtility
             var local = _dbSet.Local.FirstOrDefault(e => EqualityComparer<TKey>.Default.Equals(e.Id, entity.Id));
             if (local != null && !ReferenceEquals(local, entity))
             {
-                // Detach the local instance if it's not the same as the incoming entity
                 _db.Context.Entry(local).State = EntityState.Detached;
             }
         }
@@ -31,18 +32,18 @@ namespace BaseUtility
         {
             if (entity is null)
             {
-                return RepositoryResponse<TEntity>.EntityCannotBeNull();
+                return RepositoryResponse<TEntity>.BadRequest(_messages.EntityCannotBeNull);
             }
             try
             {
                 EnsureNotTracked(entity);
                 await _dbSet.AddAsync(entity);
                 await _db.Context.SaveChangesAsync();
-                return RepositoryResponse<TEntity>.EntityCreatedSuccessfully(entity);
+                return RepositoryResponse<TEntity>.Created(_messages.EntityCreatedSuccessfully, entity);
             }
             catch
             {
-                return RepositoryResponse<TEntity>.ErrorCreatingEntity();
+                return RepositoryResponse<TEntity>.InternalServerError(_messages.ErrorCreatingEntity);
             }
         }
 
@@ -50,22 +51,22 @@ namespace BaseUtility
         {
             if (id is null)
             {
-                return RepositoryResponse<TEntity>.IdCannotBeNull();
+                return RepositoryResponse<TEntity>.BadRequest(_messages.IdCannotBeNull);
             }
             try
             {
                 var entity = await _dbSet.FindAsync(id);
                 if (entity is null)
                 {
-                    return RepositoryResponse<TEntity>.EntityCannotBeNull();
+                    return RepositoryResponse<TEntity>.BadRequest(_messages.EntityCannotBeNull);
                 }
                 _dbSet.Remove(entity);
                 await _db.Context.SaveChangesAsync();
-                return RepositoryResponse<TEntity>.EntityDeletedSuccessfully(entity);
+                return RepositoryResponse<TEntity>.Ok(_messages.EntityDeletedSuccessfully, entity);
             }
             catch
             {
-                return RepositoryResponse<TEntity>.ErrorDeletingEntity();
+                return RepositoryResponse<TEntity>.InternalServerError(_messages.ErrorDeletingEntity);
             }
         }
 
@@ -73,16 +74,16 @@ namespace BaseUtility
         {
             if (predicate is null)
             {
-                return RepositoryResponse<IEnumerable<TEntity>>.PredicateCannotBeNull();
+                return RepositoryResponse<IEnumerable<TEntity>>.BadRequest(_messages.PredicateCannotBeNull);
             }
             try
             {
                 var entities = _dbSet.Where(predicate).ToList();
-                return RepositoryResponse<IEnumerable<TEntity>>.EntitiesRetrievedSuccessfully(entities);
+                return RepositoryResponse<IEnumerable<TEntity>>.Ok(_messages.EntitiesRetrievedSuccessfully, entities);
             }
             catch
             {
-                return RepositoryResponse<IEnumerable<TEntity>>.ErrorFindingEntities();
+                return RepositoryResponse<IEnumerable<TEntity>>.InternalServerError(_messages.ErrorFindingEntities);
             }
         }
 
@@ -91,11 +92,11 @@ namespace BaseUtility
             try
             {
                 var entities = await _dbSet.ToListAsync();
-                return RepositoryResponse<IEnumerable<TEntity>>.EntitiesRetrievedSuccessfully(entities);
+                return RepositoryResponse<IEnumerable<TEntity>>.Ok(_messages.EntitiesRetrievedSuccessfully, entities);
             }
             catch
             {
-                return RepositoryResponse<IEnumerable<TEntity>>.ErrorRetrievingEntities();
+                return RepositoryResponse<IEnumerable<TEntity>>.InternalServerError(_messages.ErrorRetrievingEntities);
             }
         }
 
@@ -103,20 +104,20 @@ namespace BaseUtility
         {
             if (id is null)
             {
-                return RepositoryResponse<TEntity>.IdCannotBeNull();
+                return RepositoryResponse<TEntity>.BadRequest(_messages.IdCannotBeNull);
             }
             try
             {
                 var entity = await _dbSet.FindAsync(id);
                 if (entity is null)
                 {
-                    return RepositoryResponse<TEntity>.EntityNotFound();
+                    return RepositoryResponse<TEntity>.NotFound(_messages.EntityNotFound);
                 }
-                return RepositoryResponse<TEntity>.EntityRetrievedSuccessfully(entity);
+                return RepositoryResponse<TEntity>.Ok(_messages.EntityRetrievedSuccessfully, entity);
             }
             catch
             {
-                return RepositoryResponse<TEntity>.ErrorRetrievingEntity();
+                return RepositoryResponse<TEntity>.InternalServerError(_messages.ErrorRetrievingEntity);
             }
         }
 
@@ -124,18 +125,18 @@ namespace BaseUtility
         {
             if (entity is null)
             {
-                return RepositoryResponse<TEntity>.EntityCannotBeNull();
+                return RepositoryResponse<TEntity>.BadRequest(_messages.EntityCannotBeNull);
             }
             try
             {
                 EnsureNotTracked(entity);
                 _dbSet.Update(entity);
                 await _db.Context.SaveChangesAsync();
-                return RepositoryResponse<TEntity>.EntityUpdatedSuccessfully(entity);
+                return RepositoryResponse<TEntity>.Ok(_messages.EntityUpdatedSuccessfully, entity);
             }
             catch
             {
-                return RepositoryResponse<TEntity>.ErrorUpdatingEntity();
+                return RepositoryResponse<TEntity>.InternalServerError(_messages.ErrorUpdatingEntity);
             }
         }
     }
