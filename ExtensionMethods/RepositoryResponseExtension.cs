@@ -2,12 +2,12 @@
 {
     public static class RepositoryResponseExtension
     {
-        public static BusinessResponse<TData> ToBusinessResponse<TData>(this RepositoryResponse<TData> repositoryResponse)
-            where TData : class
+        public static BusinessResponse<TDto> ToBusinessResponse<TDto, TDatabase>(this RepositoryResponse<TDatabase> repositoryResponse)
+            where TDatabase : class
+            where TDto : class
         {
-            return new BusinessResponse<TData>
+            return new BusinessResponse<TDto>
             {
-                Data = repositoryResponse.Data,
                 Message = repositoryResponse.Message,
                 StatusCode = (BusinessCode) repositoryResponse.StatusCode
             };

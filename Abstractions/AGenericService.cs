@@ -22,188 +22,123 @@ namespace BaseUtility
         {
             if (dto is null)
             {
-                return new BusinessResponse<TDto>
-                {
-                    StatusCode = BusinessCode.BadRequest,
-                    Message = "Entity cannot be null."
-                };
+                return BusinessResponse<TDto>.EntityCannotBeNull();
             }
 
-            var response = await _repository.CreateAsync(_dtoToDatabaseMapper.Map(dto));
+            var repositoryRes = await _repository.CreateAsync(_dtoToDatabaseMapper.Map(dto));
+            var businessRes = repositoryRes.ToBusinessResponse<TDto, TDatabase>();
 
-            if (response.Data is null)
+            if (repositoryRes.Data is null)
             {
-                return new BusinessResponse<TDto>
-                {
-                    StatusCode = (BusinessCode)response.StatusCode,
-                    Message = response.Message
-                };
+                return businessRes;
             }
-
-            var mappedDto = _databaseToDtoMapper.Map(response.Data);
-
-            return new BusinessResponse<TDto>
-            {
-                StatusCode = (BusinessCode)response.StatusCode,
-                Data = mappedDto,
-                Message = response.Message
-            };
+            
+            businessRes.Data = _databaseToDtoMapper.Map(repositoryRes.Data);
+            return businessRes;
         }
 
         public virtual async Task<BusinessResponse<TDto>> DeleteAsync(TKey id)
         {
             if (id is null)
             {
-                return new BusinessResponse<TDto>
-                {
-                    StatusCode = BusinessCode.BadRequest,
-                    Message = "ID cannot be null."
-                };
+                return BusinessResponse<TDto>.IdCannotBeNull();
             }
-            var response = await _repository.DeleteAsync(id);
-            if (response.Data is null)
+            
+            var repositoryRes = await _repository.DeleteAsync(id);
+            var businessRes = repositoryRes.ToBusinessResponse<TDto, TDatabase>();
+
+            if (repositoryRes.Data is null)
             {
-                return new BusinessResponse<TDto>
-                {
-                    StatusCode = (BusinessCode)response.StatusCode,
-                    Message = response.Message
-                };
+                return businessRes;
             }
-            var mappedDto = _databaseToDtoMapper.Map(response.Data);
-            return new BusinessResponse<TDto>
-            {
-                StatusCode = (BusinessCode)response.StatusCode,
-                Data = mappedDto,
-                Message = response.Message
-            };
+            
+            businessRes.Data = _databaseToDtoMapper.Map(repositoryRes.Data);
+            return businessRes;
         }
 
         public virtual async Task<BusinessResponse<IEnumerable<TDto>>> FindAsync(Expression<Func<TDatabase, bool>> predicate)
         {
             if (predicate is null)
             {
-                return new BusinessResponse<IEnumerable<TDto>>
-                {
-                    StatusCode = BusinessCode.BadRequest,
-                    Message = "Predicate cannot be null."
-                };
+                return BusinessResponse<IEnumerable<TDto>>.PredicateCannotBeNull();
             }
-            var response = await _repository.FindAsync(predicate);
-            if (response.Data is null)
+            
+            var repositoryRes = await _repository.FindAsync(predicate);
+            var businessRes = repositoryRes.ToBusinessResponse<IEnumerable<TDto>, IEnumerable<TDatabase>>();
+
+            if (repositoryRes.Data is null)
             {
-                return new BusinessResponse<IEnumerable<TDto>>
-                {
-                    StatusCode = (BusinessCode)response.StatusCode,
-                    Message = response.Message
-                };
+                return businessRes;
             }
 
             //TODO: Centralize this logic in a common method
-            if (response.Data.ToList().Count == 0)
+            if (repositoryRes.Data.ToList().Count == 0)
             {
-                return new BusinessResponse<IEnumerable<TDto>>
-                {
-                    StatusCode = BusinessCode.Ok,
-                    Message = response.Message,
-                    Data = []
-                };
+                businessRes.Data = [];
+                return businessRes;
             }
 
-            var mappedDtos = response.Data.Select(_databaseToDtoMapper.Map);
-
-            return new BusinessResponse<IEnumerable<TDto>>
-            {
-                StatusCode = (BusinessCode)response.StatusCode,
-                Data = mappedDtos,
-                Message = response.Message
-            };
+            businessRes.Data = repositoryRes.Data.Select(_databaseToDtoMapper.Map);
+            return businessRes;
         }
 
         public virtual async Task<BusinessResponse<IEnumerable<TDto>>> GetAllAsync()
         {
-            var response = await _repository.GetAllAsync();
-            if (response.Data is null)
+            var repositoryRes = await _repository.GetAllAsync();
+            var businessRes = repositoryRes.ToBusinessResponse<IEnumerable<TDto>, IEnumerable<TDatabase>>();
+
+            if (repositoryRes.Data is null)
             {
-                return new BusinessResponse<IEnumerable<TDto>>
-                {
-                    StatusCode = (BusinessCode)response.StatusCode,
-                    Message = response.Message
-                };
+                return businessRes;
             }
 
             //TODO: Centralize this logic in a common method
-            if (response.Data.ToList().Count == 0)
+            if (repositoryRes.Data.ToList().Count == 0)
             {
-                return new BusinessResponse<IEnumerable<TDto>>
-                {
-                    StatusCode = BusinessCode.Ok,
-                    Message = response.Message,
-                    Data = []
-                };
+                businessRes.Data = [];
+                return businessRes;
             }
-            var mappedDtos = response.Data.Select(_databaseToDtoMapper.Map);
-            return new BusinessResponse<IEnumerable<TDto>>
-            {
-                StatusCode = (BusinessCode)response.StatusCode,
-                Data = mappedDtos,
-                Message = response.Message
-            };
+            
+            businessRes.Data = repositoryRes.Data.Select(_databaseToDtoMapper.Map);
+            return businessRes;
         }
 
         public virtual async Task<BusinessResponse<TDto>> GetByIdAsync(TKey id)
         {
             if (id is null)
             {
-                return new BusinessResponse<TDto>
-                {
-                    StatusCode = BusinessCode.BadRequest,
-                    Message = "ID cannot be null."
-                };
+                return BusinessResponse<TDto>.IdCannotBeNull();
             }
-            var response = await _repository.GetByIdAsync(id);
-            if (response.Data is null)
+            
+            var repositoryRes = await _repository.GetByIdAsync(id);
+            var businessRes = repositoryRes.ToBusinessResponse<TDto, TDatabase>();
+
+            if (repositoryRes.Data is null)
             {
-                return new BusinessResponse<TDto>
-                {
-                    StatusCode = (BusinessCode)response.StatusCode,
-                    Message = response.Message
-                };
+                return businessRes;
             }
-            var mappedDto = _databaseToDtoMapper.Map(response.Data);
-            return new BusinessResponse<TDto>
-            {
-                StatusCode = (BusinessCode)response.StatusCode,
-                Data = mappedDto,
-                Message = response.Message
-            };
+            
+            businessRes.Data = _databaseToDtoMapper.Map(repositoryRes.Data);
+            return businessRes;
         }
 
         public virtual async Task<BusinessResponse<TDto>> UpdateAsync(TDto dto)
         {
             if (dto is null)
             {
-                return new BusinessResponse<TDto>
-                {
-                    StatusCode = BusinessCode.BadRequest,
-                    Message = "Entity cannot be null."
-                };
+                return BusinessResponse<TDto>.EntityCannotBeNull();
             }
-            var response = await _repository.UpdateAsync(_dtoToDatabaseMapper.Map(dto));
-            if (response.Data is null)
+            
+            var repositoryRes = await _repository.UpdateAsync(_dtoToDatabaseMapper.Map(dto));
+            var businessRes = repositoryRes.ToBusinessResponse<TDto, TDatabase>();
+
+            if (repositoryRes.Data is null)
             {
-                return new BusinessResponse<TDto>
-                {
-                    StatusCode = (BusinessCode)response.StatusCode,
-                    Message = response.Message
-                };
+                return businessRes;
             }
-            var mappedDto = _databaseToDtoMapper.Map(response.Data);
-            return new BusinessResponse<TDto>
-            {
-                StatusCode = (BusinessCode)response.StatusCode,
-                Data = mappedDto,
-                Message = response.Message
-            };
+            
+            businessRes.Data = _databaseToDtoMapper.Map(repositoryRes.Data);
+            return businessRes;
         }
     }
 }

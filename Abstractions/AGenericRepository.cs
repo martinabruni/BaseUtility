@@ -31,31 +31,18 @@ namespace BaseUtility
         {
             if (entity is null)
             {
-                return new RepositoryResponse<TEntity>
-                {
-                    StatusCode = RepositoryCode.BadRequest,
-                    Message = "Entity cannot be null."
-                };
+                return RepositoryResponse<TEntity>.EntityCannotBeNull();
             }
             try
             {
                 EnsureNotTracked(entity);
                 await _dbSet.AddAsync(entity);
                 await _db.Context.SaveChangesAsync();
-                return new RepositoryResponse<TEntity>
-                {
-                    StatusCode = RepositoryCode.Created,
-                    Data = entity,
-                    Message = "Entity created successfully."
-                };
+                return RepositoryResponse<TEntity>.EntityCreatedSuccessfully(entity);
             }
             catch
             {
-                return new RepositoryResponse<TEntity>
-                {
-                    StatusCode = RepositoryCode.InternalServerError,
-                    Message = $"Error creating entity"
-                };
+                return RepositoryResponse<TEntity>.ErrorCreatingEntity();
             }
         }
 
@@ -63,39 +50,22 @@ namespace BaseUtility
         {
             if (id is null)
             {
-                return new RepositoryResponse<TEntity>
-                {
-                    StatusCode = RepositoryCode.BadRequest,
-                    Message = "ID cannot be null."
-                };
+                return RepositoryResponse<TEntity>.IdCannotBeNull();
             }
             try
             {
                 var entity = await _dbSet.FindAsync(id);
                 if (entity is null)
                 {
-                    return new RepositoryResponse<TEntity>
-                    {
-                        StatusCode = RepositoryCode.NotFound,
-                        Message = "Entity not found."
-                    };
+                    return RepositoryResponse<TEntity>.EntityCannotBeNull();
                 }
                 _dbSet.Remove(entity);
                 await _db.Context.SaveChangesAsync();
-                return new RepositoryResponse<TEntity>
-                {
-                    StatusCode = RepositoryCode.Ok,
-                    Data = entity,
-                    Message = "Entity deleted successfully."
-                };
+                return RepositoryResponse<TEntity>.EntityDeletedSuccessfully(entity);
             }
             catch
             {
-                return new RepositoryResponse<TEntity>
-                {
-                    StatusCode = RepositoryCode.InternalServerError,
-                    Message = "Error deleting entity"
-                };
+                return RepositoryResponse<TEntity>.ErrorDeletingEntity();
             }
         }
 
@@ -103,29 +73,16 @@ namespace BaseUtility
         {
             if (predicate is null)
             {
-                return new RepositoryResponse<IEnumerable<TEntity>>
-                {
-                    StatusCode = RepositoryCode.BadRequest,
-                    Message = "Predicate cannot be null."
-                };
+                return RepositoryResponse<IEnumerable<TEntity>>.PredicateCannotBeNull();
             }
             try
             {
                 var entities = _dbSet.Where(predicate).ToList();
-                return new RepositoryResponse<IEnumerable<TEntity>>
-                {
-                    StatusCode = RepositoryCode.Ok,
-                    Data = entities,
-                    Message = "Entities found successfully."
-                };
+                return RepositoryResponse<IEnumerable<TEntity>>.EntitiesRetrievedSuccessfully(entities);
             }
             catch
             {
-                return new RepositoryResponse<IEnumerable<TEntity>>
-                {
-                    StatusCode = RepositoryCode.InternalServerError,
-                    Message = "Error finding entities"
-                };
+                return RepositoryResponse<IEnumerable<TEntity>>.ErrorFindingEntities();
             }
         }
 
@@ -134,20 +91,11 @@ namespace BaseUtility
             try
             {
                 var entities = await _dbSet.ToListAsync();
-                return new RepositoryResponse<IEnumerable<TEntity>>
-                {
-                    StatusCode = RepositoryCode.Ok,
-                    Data = entities,
-                    Message = "Entities retrieved successfully."
-                };
+                return RepositoryResponse<IEnumerable<TEntity>>.EntitiesRetrievedSuccessfully(entities);
             }
             catch
             {
-                return new RepositoryResponse<IEnumerable<TEntity>>
-                {
-                    StatusCode = RepositoryCode.InternalServerError,
-                    Message = "Error retrieving entities"
-                };
+                return RepositoryResponse<IEnumerable<TEntity>>.ErrorRetrievingEntities();
             }
         }
 
@@ -155,37 +103,20 @@ namespace BaseUtility
         {
             if (id is null)
             {
-                return new RepositoryResponse<TEntity>
-                {
-                    StatusCode = RepositoryCode.BadRequest,
-                    Message = "ID cannot be null."
-                };
+                return RepositoryResponse<TEntity>.IdCannotBeNull();
             }
             try
             {
                 var entity = await _dbSet.FindAsync(id);
                 if (entity is null)
                 {
-                    return new RepositoryResponse<TEntity>
-                    {
-                        StatusCode = RepositoryCode.NotFound,
-                        Message = "Entity not found."
-                    };
+                    return RepositoryResponse<TEntity>.EntityNotFound();
                 }
-                return new RepositoryResponse<TEntity>
-                {
-                    StatusCode = RepositoryCode.Ok,
-                    Data = entity,
-                    Message = "Entity retrieved successfully."
-                };
+                return RepositoryResponse<TEntity>.EntityRetrievedSuccessfully(entity);
             }
             catch
             {
-                return new RepositoryResponse<TEntity>
-                {
-                    StatusCode = RepositoryCode.InternalServerError,
-                    Message = "Error retrieving entity"
-                };
+                return RepositoryResponse<TEntity>.ErrorRetrievingEntity();
             }
         }
 
@@ -193,31 +124,18 @@ namespace BaseUtility
         {
             if (entity is null)
             {
-                return new RepositoryResponse<TEntity>
-                {
-                    StatusCode = RepositoryCode.BadRequest,
-                    Message = "Entity cannot be null."
-                };
+                return RepositoryResponse<TEntity>.EntityCannotBeNull();
             }
             try
             {
                 EnsureNotTracked(entity);
                 _dbSet.Update(entity);
                 await _db.Context.SaveChangesAsync();
-                return new RepositoryResponse<TEntity>
-                {
-                    StatusCode = RepositoryCode.Ok,
-                    Data = entity,
-                    Message = "Entity updated successfully."
-                };
+                return RepositoryResponse<TEntity>.EntityUpdatedSuccessfully(entity);
             }
             catch
             {
-                return new RepositoryResponse<TEntity>
-                {
-                    StatusCode = RepositoryCode.InternalServerError,
-                    Message = "Error updating entity"
-                };
+                return RepositoryResponse<TEntity>.ErrorUpdatingEntity();
             }
         }
     }
