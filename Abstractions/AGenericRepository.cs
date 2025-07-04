@@ -83,7 +83,7 @@ namespace BaseUtility
             }
             catch
             {
-                return Task.FromResult(RepositoryResponse<IEnumerable<TEntity>>.InternalServerError(_messages.ErrorFindingEntities));
+                return Task.FromResult(RepositoryResponse<IEnumerable<TEntity>>.InternalServerError(_messages.ErrorRetrievingEntities));
             }
         }
 
