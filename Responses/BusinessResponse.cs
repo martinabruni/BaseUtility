@@ -13,14 +13,14 @@
             Message = message,
         };
 
-        public static BusinessResponse<TData> Created(string? message = null, TData? data = default) => new BusinessResponse<TData>
+        public static BusinessResponse<TData> Created(TData? data, string? message = null) => new BusinessResponse<TData>
         {
             StatusCode = BusinessCode.Created,
             Message = message,
             Data = data
         };
 
-        public static BusinessResponse<TData> Ok(string? message = null, TData? data = default) => new BusinessResponse<TData>
+        public static BusinessResponse<TData> Ok(TData? data, string? message = null) => new BusinessResponse<TData>
         {
             StatusCode = BusinessCode.Ok,
             Message = message,
