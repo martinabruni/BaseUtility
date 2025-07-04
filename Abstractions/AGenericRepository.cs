@@ -39,7 +39,7 @@ namespace BaseUtility
                 EnsureNotTracked(entity);
                 await _dbSet.AddAsync(entity);
                 await _db.Context.SaveChangesAsync();
-                return RepositoryResponse<TEntity>.Created(_messages.EntityCreatedSuccessfully, entity);
+                return RepositoryResponse<TEntity>.Created(entity, _messages.EntityCreatedSuccessfully);
             }
             catch
             {
@@ -62,7 +62,7 @@ namespace BaseUtility
                 }
                 _dbSet.Remove(entity);
                 await _db.Context.SaveChangesAsync();
-                return RepositoryResponse<TEntity>.Ok(_messages.EntityDeletedSuccessfully, entity);
+                return RepositoryResponse<TEntity>.Ok(entity, _messages.EntityDeletedSuccessfully);
             }
             catch
             {
@@ -79,7 +79,7 @@ namespace BaseUtility
             try
             {
                 var entities = _dbSet.Where(predicate).ToList();
-                return Task.FromResult(RepositoryResponse<IEnumerable<TEntity>>.Ok(_messages.EntitiesRetrievedSuccessfully, entities));
+                return Task.FromResult(RepositoryResponse<IEnumerable<TEntity>>.Ok(entities, _messages.EntitiesRetrievedSuccessfully));
             }
             catch
             {
@@ -92,7 +92,7 @@ namespace BaseUtility
             try
             {
                 var entities = await _dbSet.ToListAsync();
-                return RepositoryResponse<IEnumerable<TEntity>>.Ok(_messages.EntitiesRetrievedSuccessfully, entities);
+                return RepositoryResponse<IEnumerable<TEntity>>.Ok(entities, _messages.EntitiesRetrievedSuccessfully);
             }
             catch
             {
@@ -113,7 +113,7 @@ namespace BaseUtility
                 {
                     return RepositoryResponse<TEntity>.NotFound(_messages.EntityNotFound);
                 }
-                return RepositoryResponse<TEntity>.Ok(_messages.EntityRetrievedSuccessfully, entity);
+                return RepositoryResponse<TEntity>.Ok(entity, _messages.EntityRetrievedSuccessfully);
             }
             catch
             {
@@ -132,7 +132,7 @@ namespace BaseUtility
                 EnsureNotTracked(entity);
                 _dbSet.Update(entity);
                 await _db.Context.SaveChangesAsync();
-                return RepositoryResponse<TEntity>.Ok(_messages.EntityUpdatedSuccessfully, entity);
+                return RepositoryResponse<TEntity>.Ok(entity, _messages.EntityUpdatedSuccessfully);
             }
             catch
             {
