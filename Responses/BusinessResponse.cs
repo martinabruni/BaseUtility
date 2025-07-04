@@ -44,5 +44,11 @@
             StatusCode = BusinessCode.Unauthorized,
             Message = message,
         };
+
+        public static BusinessResponse<TData> NotImplemented(string? message = null) => new BusinessResponse<TData>
+        {
+            StatusCode = BusinessCode.NotImplemented,
+            Message = message,
+        };
     }
 }
