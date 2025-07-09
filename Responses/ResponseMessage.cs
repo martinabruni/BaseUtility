@@ -1,6 +1,6 @@
 namespace BaseUtility
 {
-    public partial class ResponseMessage
+    public class ResponseMessage
     {
         public string InvalidRequest { get; set; } = "Invalid request.";
         public string EntityCreatedSuccessfully { get; set; } = "Entity created successfully.";
