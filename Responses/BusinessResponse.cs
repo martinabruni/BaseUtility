@@ -27,6 +27,12 @@
             Data = data
         };
 
+        public static BusinessResponse<TData> Ok(string? message = null) => new BusinessResponse<TData>
+        {
+            StatusCode = BusinessCode.Ok,
+            Message = message,
+        };
+
         public static BusinessResponse<TData> NotFound(string? message = null) => new BusinessResponse<TData>
         {
             StatusCode = BusinessCode.NotFound,

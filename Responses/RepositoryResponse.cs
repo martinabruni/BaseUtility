@@ -26,7 +26,7 @@
             Data = data
         };
 
-        public static RepositoryResponse<TData> OkWithoutData(string? message = null) => new RepositoryResponse<TData>
+        public static RepositoryResponse<TData> Ok(string? message = null) => new RepositoryResponse<TData>
         {
             StatusCode = RepositoryCode.Ok,
             Message = message,

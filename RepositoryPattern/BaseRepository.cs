@@ -3,16 +3,16 @@ using System.Linq.Expressions;
 
 namespace BaseUtility
 {
-    public class AGenericRepository<TContext, TEntity, TKey> : IRepository<TEntity, TKey>
+    public abstract class BaseRepository<TContext, TEntity, TKey> : IRepository<TEntity, TKey>
         where TEntity : class, IEntity<TKey>
         where TKey : notnull
         where TContext : DbContext
     {
         protected readonly IDatabase<TContext> _db;
         protected readonly DbSet<TEntity> _dbSet;
-        protected readonly ResponseMessageOption _messages;
+        protected readonly ResponseMessage _messages;
 
-        public AGenericRepository(IDatabase<TContext> db, ResponseMessageOption messages)
+        public BaseRepository(IDatabase<TContext> db, ResponseMessage messages)
         {
             _db = db;
             _dbSet = _db.Context.Set<TEntity>();

@@ -2,7 +2,7 @@
 
 namespace BaseUtility
 {
-    public class AGenericService<TDto, TDatabase, TKey> : IService<TDto, TDatabase, TKey>
+    public abstract class BaseService<TDto, TDatabase, TKey> : IService<TDto, TDatabase, TKey>
         where TDto : class, IEntity<TKey>
         where TDatabase : class, IEntity<TKey>
         where TKey : notnull
@@ -10,13 +10,13 @@ namespace BaseUtility
         protected readonly IRepository<TDatabase, TKey> _repository;
         protected readonly IMapper<TDatabase, TDto> _databaseToDtoMapper;
         protected readonly IMapper<TDto, TDatabase> _dtoToDatabaseMapper;
-        protected readonly ResponseMessageOption _messages;
+        protected readonly ResponseMessage _messages;
 
-        public AGenericService(
+        public BaseService(
             IRepository<TDatabase, TKey> repository,
             IMapper<TDatabase, TDto> databaseToDtoMapper,
             IMapper<TDto, TDatabase> dtoToDatabaseMapper,
-            ResponseMessageOption messages)
+            ResponseMessage messages)
         {
             _repository = repository;
             _databaseToDtoMapper = databaseToDtoMapper;
