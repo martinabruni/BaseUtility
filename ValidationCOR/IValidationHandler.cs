@@ -1,11 +1,10 @@
 ﻿namespace BaseUtility
 {
-    public interface IValidationHandler<TRequest, TData, TKey>
-        where TRequest : class
+    public interface IValidationHandler<TRequest, TData, TContext>
         where TData : class
-        where TKey : notnull
+        where TContext : class
     {
-        Task<BusinessResponse<TData>> HandleAsync(TRequest request, IValidationContext<TData, TKey> context);
-        IValidationHandler<TRequest, TData, TKey> SetNext(IValidationHandler<TRequest, TData, TKey> nextHandler);
+        Task<BusinessResponse<TData>> HandleAsync(TRequest request, ValidationContext<TContext> context);
+        IValidationHandler<TRequest, TData, TContext> SetNext(IValidationHandler<TRequest, TData, TContext> nextHandler);
     }
 }

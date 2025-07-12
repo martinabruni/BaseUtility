@@ -1,19 +1,18 @@
 ﻿namespace BaseUtility
 {
-    public class ValidationPipeline<TRequest, TData, TKey>
-        where TRequest : class
+    public class ValidationPipeline<TRequest, TData, TContext>
+        where TContext : class
         where TData : class
-        where TKey : notnull
     {
-        private readonly List<IValidationHandler<TRequest, TData, TKey>> _handlers = new();
+        private readonly List<IValidationHandler<TRequest, TData, TContext>> _handlers = new();
 
-        public ValidationPipeline<TRequest, TData, TKey> AddHandler(IValidationHandler<TRequest, TData, TKey> handler)
+        public ValidationPipeline<TRequest, TData, TContext> AddHandler(IValidationHandler<TRequest, TData, TContext> handler)
         {
             _handlers.Add(handler);
             return this;
         }
 
-        public async Task<BusinessResponse<TData>> ValidateAsync(TRequest request, IValidationContext<TData, TKey> context)
+        public async Task<BusinessResponse<TData>> ValidateAsync(TRequest request, ValidationContext<TContext> context)
         {
             if(_handlers.Count == 0)
             {
