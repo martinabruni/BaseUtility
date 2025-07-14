@@ -4,7 +4,7 @@
         where TData : class
         where TContext : class
     {
-        Task<BusinessResponse<TData>> HandleAsync(TRequest request, ValidationContext<TContext> context);
+        Task<BusinessResponse<TData>> HandleAsync(TRequest request, ContextProvider<TContext> context);
         IValidationHandler<TRequest, TData, TContext> SetNext(IValidationHandler<TRequest, TData, TContext> nextHandler);
     }
 }

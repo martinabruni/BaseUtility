@@ -6,7 +6,7 @@
     {
         private IValidationHandler<TRequest, TData, TContext>? _nextHandler;
 
-        public async Task<BusinessResponse<TData>> HandleAsync(TRequest request, ValidationContext<TContext> context)
+        public async Task<BusinessResponse<TData>> HandleAsync(TRequest request, ContextProvider<TContext> context)
         {
             var result = await ValidateAsync(request, context);
 
@@ -29,6 +29,6 @@
             return nextHandler;
         }
 
-        protected abstract Task<BusinessResponse<TData>> ValidateAsync(TRequest request, ValidationContext<TContext> context);
+        protected abstract Task<BusinessResponse<TData>> ValidateAsync(TRequest request, ContextProvider<TContext> context);
     }
 }

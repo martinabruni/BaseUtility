@@ -1,6 +1,6 @@
 ﻿namespace BaseUtility
 {
-    public class ValidationContext<TContext>
+    public class ContextProvider<TContext>
         where TContext : class
     {
         public required TContext Context { get; set; }

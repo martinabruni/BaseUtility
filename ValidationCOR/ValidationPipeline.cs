@@ -12,7 +12,7 @@
             return this;
         }
 
-        public async Task<BusinessResponse<TData>> ValidateAsync(TRequest request, ValidationContext<TContext> context)
+        public async Task<BusinessResponse<TData>> ValidateAsync(TRequest request, ContextProvider<TContext> context)
         {
             if(_handlers.Count == 0)
             {
