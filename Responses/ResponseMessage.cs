@@ -18,5 +18,6 @@ namespace BaseUtility
         public string NotImplemented { get; set; } = "This feature is not implemented yet.";
         public string NotLoggedIn { get; set; } = "Login to perform this action.";
         public string ErrorMapping { get; set; } = "Error mapping data.";
+        public string EntityAlreadyExists { get; set; } = "Entity already exists.";
     }
 }
