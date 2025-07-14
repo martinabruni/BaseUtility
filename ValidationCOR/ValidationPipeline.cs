@@ -6,9 +6,9 @@
     {
         private readonly List<IValidationHandler<TRequest, TData, TContext>> _handlers = new();
 
-        public ValidationPipeline<TRequest, TData, TContext> AddHandler(IValidationHandler<TRequest, TData, TContext> handler)
+        public ValidationPipeline<TRequest, TData, TContext> AddHandlers(IEnumerable<IValidationHandler<TRequest, TData, TContext>> handlers)
         {
-            _handlers.Add(handler);
+            _handlers.AddRange(handlers);
             return this;
         }
 
