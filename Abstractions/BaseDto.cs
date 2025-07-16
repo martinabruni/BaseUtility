@@ -1,7 +1,6 @@
 ﻿namespace BaseUtility
 {
     public abstract class BaseDto<TKey> : IEntity<TKey>, IAuditable
-        where TKey : notnull
     {
         public required TKey Id { get; set; }
 
