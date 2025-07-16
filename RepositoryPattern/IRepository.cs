@@ -4,7 +4,6 @@ namespace BaseUtility
 {
     public interface IRepository<TEntity, TKey>
         where TEntity : class, IEntity<TKey>
-        where TKey : notnull
     {
         Task<RepositoryResponse<TEntity>> GetByIdAsync(TKey id);
         Task<RepositoryResponse<TEntity>> CreateAsync(TEntity entity);

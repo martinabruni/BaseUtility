@@ -5,7 +5,6 @@ namespace BaseUtility
     public abstract class BaseService<TDto, TDatabase, TKey> : IService<TDto, TDatabase, TKey>
         where TDto : class, IEntity<TKey>
         where TDatabase : class, IEntity<TKey>
-        where TKey : notnull
     {
         protected readonly IRepository<TDatabase, TKey> _repository;
         protected readonly IMapper<TDatabase, TDto> _databaseToDtoMapper;

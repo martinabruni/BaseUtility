@@ -5,7 +5,6 @@ namespace BaseUtility
 {
     public abstract class BaseRepository<TContext, TEntity, TKey> : IRepository<TEntity, TKey>
         where TEntity : class, IEntity<TKey>
-        where TKey : notnull
         where TContext : DbContext
     {
         protected readonly IDatabase<TContext> _db;

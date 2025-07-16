@@ -5,7 +5,6 @@ namespace BaseUtility
     public interface IService<TDto, TDatabase, TKey>
         where TDto : class, IEntity<TKey>
         where TDatabase : class, IEntity<TKey>
-        where TKey : notnull
     {
         Task<BusinessResponse<TDto>> GetByIdAsync(TKey id);
         Task<BusinessResponse<TDto>> CreateAsync(TDto dto);
