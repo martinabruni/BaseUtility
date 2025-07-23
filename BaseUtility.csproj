@@ -5,11 +5,11 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<PackageId>BaseUtility</PackageId>
-		<Version>7.4.0</Version>
+		<Version>7.5.0</Version>
 		<Authors>Martina Bruni</Authors>
 		<Company>Author</Company>
 		<Description>Base utility library for .NET 8 projects.</Description>
-		<PackageOutputPath>..\NuGets</PackageOutputPath>
+		<PackageOutputPath>..\Internal.FileConfess\nugets</PackageOutputPath>
 
 	</PropertyGroup>
 
