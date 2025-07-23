@@ -27,7 +27,7 @@ namespace BaseUtility
             }
         }
 
-        public virtual async Task<RepositoryResponse<TEntity>> CreateAsync(TEntity entity)
+        public virtual async Task<RepositoryResponse<TEntity>> CreateAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             if (entity is null)
             {
@@ -36,8 +36,8 @@ namespace BaseUtility
             try
             {
                 EnsureNotTracked(entity);
-                await _dbSet.AddAsync(entity);
-                await _db.Context.SaveChangesAsync();
+                await _dbSet.AddAsync(entity, cancellationToken);
+                await _db.Context.SaveChangesAsync(cancellationToken);
                 return RepositoryResponse<TEntity>.Created(entity, _messages.EntityCreatedSuccessfully);
             }
             catch
@@ -46,7 +46,7 @@ namespace BaseUtility
             }
         }
 
-        public virtual async Task<RepositoryResponse<TEntity>> DeleteAsync(TKey id)
+        public virtual async Task<RepositoryResponse<TEntity>> DeleteAsync(TKey id, CancellationToken cancellationToken = default)
         {
             if (id is null)
             {
@@ -54,13 +54,13 @@ namespace BaseUtility
             }
             try
             {
-                var entity = await _dbSet.FindAsync(id);
+                var entity = await _dbSet.FindAsync(id, cancellationToken);
                 if (entity is null)
                 {
                     return RepositoryResponse<TEntity>.NotFound(_messages.InvalidRequest);
                 }
                 _dbSet.Remove(entity);
-                await _db.Context.SaveChangesAsync();
+                await _db.Context.SaveChangesAsync(cancellationToken);
                 return RepositoryResponse<TEntity>.Ok(entity, _messages.EntityDeletedSuccessfully);
             }
             catch
@@ -69,28 +69,15 @@ namespace BaseUtility
             }
         }
 
-        public virtual Task<RepositoryResponse<IEnumerable<TEntity>>> FindAsync(Expression<Func<TEntity, bool>> predicate)
+        public virtual async Task<RepositoryResponse<IEnumerable<TEntity>>> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
         {
             if (predicate is null)
             {
-                return Task.FromResult(RepositoryResponse<IEnumerable<TEntity>>.BadRequest(_messages.InvalidRequest));
+                return RepositoryResponse<IEnumerable<TEntity>>.BadRequest(_messages.InvalidRequest);
             }
             try
             {
-                var entities = _dbSet.Where(predicate).ToList();
-                return Task.FromResult(RepositoryResponse<IEnumerable<TEntity>>.Ok(entities, _messages.EntitiesRetrievedSuccessfully));
-            }
-            catch
-            {
-                return Task.FromResult(RepositoryResponse<IEnumerable<TEntity>>.InternalServerError(_messages.ErrorRetrievingEntities));
-            }
-        }
-
-        public virtual async Task<RepositoryResponse<IEnumerable<TEntity>>> GetAllAsync()
-        {
-            try
-            {
-                var entities = await _dbSet.ToListAsync();
+                var entities = await _dbSet.Where(predicate).ToListAsync(cancellationToken);
                 return RepositoryResponse<IEnumerable<TEntity>>.Ok(entities, _messages.EntitiesRetrievedSuccessfully);
             }
             catch
@@ -99,7 +86,20 @@ namespace BaseUtility
             }
         }
 
-        public virtual async Task<RepositoryResponse<TEntity>> GetByIdAsync(TKey id)
+        public virtual async Task<RepositoryResponse<IEnumerable<TEntity>>> GetAllAsync(CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var entities = await _dbSet.ToListAsync(cancellationToken);
+                return RepositoryResponse<IEnumerable<TEntity>>.Ok(entities, _messages.EntitiesRetrievedSuccessfully);
+            }
+            catch
+            {
+                return RepositoryResponse<IEnumerable<TEntity>>.InternalServerError(_messages.ErrorRetrievingEntities);
+            }
+        }
+
+        public virtual async Task<RepositoryResponse<TEntity>> GetByIdAsync(TKey id, CancellationToken cancellationToken = default)
         {
             if (id is null)
             {
@@ -107,7 +107,7 @@ namespace BaseUtility
             }
             try
             {
-                var entity = await _dbSet.FindAsync(id);
+                var entity = await _dbSet.FindAsync(id, cancellationToken);
                 if (entity is null)
                 {
                     return RepositoryResponse<TEntity>.NotFound(_messages.EntityNotFound);
@@ -120,7 +120,7 @@ namespace BaseUtility
             }
         }
 
-        public virtual async Task<RepositoryResponse<TEntity>> UpdateAsync(TEntity entity)
+        public virtual async Task<RepositoryResponse<TEntity>> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             if (entity is null)
             {
@@ -130,7 +130,7 @@ namespace BaseUtility
             {
                 EnsureNotTracked(entity);
                 _dbSet.Update(entity);
-                await _db.Context.SaveChangesAsync();
+                await _db.Context.SaveChangesAsync(cancellationToken);
                 return RepositoryResponse<TEntity>.Ok(entity, _messages.EntityUpdatedSuccessfully);
             }
             catch
