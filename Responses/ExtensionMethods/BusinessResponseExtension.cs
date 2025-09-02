@@ -19,5 +19,28 @@ namespace BaseUtility
                 _ => new ObjectResult(response) { StatusCode = 500 }
             };
         }
+
+        public static IActionResult ToActionResult<TInputData, TOutputData>(this BusinessResponse<TInputData> response, IMapper<TInputData, TOutputData> mapper)
+            where TInputData : class
+            where TOutputData : class
+        {
+            if(response.Data is IEnumerable<TInputData> inputEnumerable)
+            {
+                var newCollectionRes = new BusinessResponse<IEnumerable<TOutputData>>
+                {
+                    StatusCode = response.StatusCode,
+                    Message = response.Message,
+                    Data = inputEnumerable.Select(mapper.Map)
+                };
+                return newCollectionRes.ToActionResult();
+            }
+            var newResponse = new BusinessResponse<TOutputData>
+            {
+                StatusCode = response.StatusCode,
+                Message = response.Message,
+                Data = response.Data is null ? null : mapper.Map(response.Data)
+            };
+            return newResponse.ToActionResult();
+        }
     }
 }
