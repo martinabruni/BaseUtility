@@ -3,7 +3,7 @@
 namespace BaseUtility
 {
     public interface IRepository<TEntity, TKey>
-        where TEntity : class, IEntity<TKey>
+        where TEntity : class
     {
         Task<RepositoryResponse<TEntity>> GetByIdAsync(TKey id, CancellationToken cancellationToken = default);
         Task<RepositoryResponse<TEntity>> CreateAsync(TEntity entity, CancellationToken cancellationToken = default);
