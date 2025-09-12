@@ -2,13 +2,13 @@
 {
     public static class RepositoryResponseExtension
     {
-        public static BusinessResponse<TDto> ToBusinessResponse<TDto, TDatabase>(
-            this RepositoryResponse<TDatabase> repositoryResponse,
-            IMapper<TDatabase, TDto> mapper)
-            where TDatabase : class
-            where TDto : class
+        public static BusinessResponse<TDomain> ToBusinessResponse<TDomain, TEntity>(
+            this RepositoryResponse<TEntity> repositoryResponse,
+            IMapper<TEntity, TDomain> mapper)
+            where TEntity : class
+            where TDomain : class
         {
-            return new BusinessResponse<TDto>
+            return new BusinessResponse<TDomain>
             {
                 StatusCode = (BusinessCode)repositoryResponse.StatusCode,
                 Message = repositoryResponse.Message,
@@ -16,13 +16,13 @@
             };
         }
 
-        public static BusinessResponse<IEnumerable<TDto>> ToBusinessResponse<TDto, TDatabase>(
-            this RepositoryResponse<IEnumerable<TDatabase>> repositoryResponse,
-            IMapper<TDatabase, TDto> mapper)
-            where TDatabase : class
-            where TDto : class
+        public static BusinessResponse<IEnumerable<TDomain>> ToBusinessResponse<TDomain, TEntity>(
+            this RepositoryResponse<IEnumerable<TEntity>> repositoryResponse,
+            IMapper<TEntity, TDomain> mapper)
+            where TEntity : class
+            where TDomain : class
         {
-            return new BusinessResponse<IEnumerable<TDto>>
+            return new BusinessResponse<IEnumerable<TDomain>>
             {
                 StatusCode = (BusinessCode)repositoryResponse.StatusCode,
                 Message = repositoryResponse.Message,

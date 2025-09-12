@@ -2,87 +2,87 @@
 
 namespace BaseUtility
 {
-    public abstract class BaseService<TDto, TDatabase, TKey> : IService<TDto, TDatabase, TKey>
-        where TDto : class, IEntity<TKey>
-        where TDatabase : class, IEntity<TKey>
+    public abstract class BaseService<TDomain, TEntity, TKey> : IService<TDomain, TEntity, TKey>
+        where TDomain : class, IEntity<TKey>
+        where TEntity : class, IEntity<TKey>
     {
-        protected readonly IRepository<TDatabase, TKey> _repository;
-        protected readonly IMapper<TDatabase, TDto> _databaseToDtoMapper;
-        protected readonly IMapper<TDto, TDatabase> _dtoToDatabaseMapper;
+        protected readonly IRepository<TEntity, TKey> _repository;
+        protected readonly IMapper<TEntity, TDomain> _entityToDomainMapper;
+        protected readonly IMapper<TDomain, TEntity> _domainModelToEntityMapper;
         protected readonly ResponseMessage _messages;
 
         public BaseService(
-            IRepository<TDatabase, TKey> repository,
-            IMapper<TDatabase, TDto> databaseToDtoMapper,
-            IMapper<TDto, TDatabase> dtoToDatabaseMapper,
+            IRepository<TEntity, TKey> repository,
+            IMapper<TEntity, TDomain> entityToDomainMapper,
+            IMapper<TDomain, TEntity> domainModelToEntityMapper,
             ResponseMessage messages)
         {
             _repository = repository;
-            _databaseToDtoMapper = databaseToDtoMapper;
-            _dtoToDatabaseMapper = dtoToDatabaseMapper;
+            _entityToDomainMapper = entityToDomainMapper;
+            _domainModelToEntityMapper = domainModelToEntityMapper;
             _messages = messages;
         }
 
-        public virtual async Task<BusinessResponse<TDto>> CreateAsync(TDto dto, CancellationToken cancellationToken)
+        public virtual async Task<BusinessResponse<TDomain>> CreateAsync(TDomain domainModel, CancellationToken cancellationToken)
         {
-            if (dto is null)
+            if (domainModel is null)
             {
-                return BusinessResponse<TDto>.BadRequest(_messages.InvalidRequest);
+                return BusinessResponse<TDomain>.BadRequest(_messages.InvalidRequest);
             }
 
-            var repositoryRes = await _repository.CreateAsync(_dtoToDatabaseMapper.Map(dto), cancellationToken);
+            var repositoryRes = await _repository.CreateAsync(_domainModelToEntityMapper.Map(domainModel), cancellationToken);
 
-            return repositoryRes.ToBusinessResponse(_databaseToDtoMapper);
+            return repositoryRes.ToBusinessResponse(_entityToDomainMapper);
         }
 
-        public virtual async Task<BusinessResponse<TDto>> DeleteAsync(TKey id, CancellationToken cancellationToken)
+        public virtual async Task<BusinessResponse<TDomain>> DeleteAsync(TKey id, CancellationToken cancellationToken)
         {
             if (id is null)
             {
-                return BusinessResponse<TDto>.BadRequest(_messages.InvalidRequest);
+                return BusinessResponse<TDomain>.BadRequest(_messages.InvalidRequest);
             }
 
             var repositoryRes = await _repository.DeleteAsync(id, cancellationToken);
-            return repositoryRes.ToBusinessResponse(_databaseToDtoMapper);
+            return repositoryRes.ToBusinessResponse(_entityToDomainMapper);
         }
 
-        public virtual async Task<BusinessResponse<IEnumerable<TDto>>> FindAsync(Expression<Func<TDatabase, bool>> predicate, CancellationToken cancellationToken)
+        public virtual async Task<BusinessResponse<IEnumerable<TDomain>>> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken)
         {
             if (predicate is null)
             {
-                return BusinessResponse<IEnumerable<TDto>>.BadRequest(_messages.InvalidRequest);
+                return BusinessResponse<IEnumerable<TDomain>>.BadRequest(_messages.InvalidRequest);
             }
 
             var repositoryRes = await _repository.FindAsync(predicate, cancellationToken);
-            return repositoryRes.ToBusinessResponse(_databaseToDtoMapper);
+            return repositoryRes.ToBusinessResponse(_entityToDomainMapper);
         }
 
-        public virtual async Task<BusinessResponse<IEnumerable<TDto>>> GetAllAsync(CancellationToken cancellationToken)
+        public virtual async Task<BusinessResponse<IEnumerable<TDomain>>> GetAllAsync(CancellationToken cancellationToken)
         {
             var repositoryRes = await _repository.GetAllAsync(cancellationToken);
-            return repositoryRes.ToBusinessResponse(_databaseToDtoMapper);
+            return repositoryRes.ToBusinessResponse(_entityToDomainMapper);
         }
 
-        public virtual async Task<BusinessResponse<TDto>> GetByIdAsync(TKey id, CancellationToken cancellationToken)
+        public virtual async Task<BusinessResponse<TDomain>> GetByIdAsync(TKey id, CancellationToken cancellationToken)
         {
             if (id is null)
             {
-                return BusinessResponse<TDto>.BadRequest(_messages.InvalidRequest);
+                return BusinessResponse<TDomain>.BadRequest(_messages.InvalidRequest);
             }
 
             var repositoryRes = await _repository.GetByIdAsync(id, cancellationToken);
-            return repositoryRes.ToBusinessResponse(_databaseToDtoMapper);
+            return repositoryRes.ToBusinessResponse(_entityToDomainMapper);
         }
 
-        public virtual async Task<BusinessResponse<TDto>> UpdateAsync(TDto dto, CancellationToken cancellationToken)
+        public virtual async Task<BusinessResponse<TDomain>> UpdateAsync(TDomain domainModel, CancellationToken cancellationToken)
         {
-            if (dto is null)
+            if (domainModel is null)
             {
-                return BusinessResponse<TDto>.BadRequest(_messages.InvalidRequest);
+                return BusinessResponse<TDomain>.BadRequest(_messages.InvalidRequest);
             }
 
-            var repositoryRes = await _repository.UpdateAsync(_dtoToDatabaseMapper.Map(dto), cancellationToken);
-            return repositoryRes.ToBusinessResponse(_databaseToDtoMapper);
+            var repositoryRes = await _repository.UpdateAsync(_domainModelToEntityMapper.Map(domainModel), cancellationToken);
+            return repositoryRes.ToBusinessResponse(_entityToDomainMapper);
         }
     }
 }

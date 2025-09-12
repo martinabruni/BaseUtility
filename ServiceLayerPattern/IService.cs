@@ -2,15 +2,15 @@
 
 namespace BaseUtility
 {
-    public interface IService<TDto, TDatabase, TKey>
-        where TDto : class, IEntity<TKey>
-        where TDatabase : class, IEntity<TKey>
+    public interface IService<TDomain, TEntity, TKey>
+        where TDomain : class
+        where TEntity : class
     {
-        Task<BusinessResponse<TDto>> GetByIdAsync(TKey id, CancellationToken cancellationToken = default);
-        Task<BusinessResponse<TDto>> CreateAsync(TDto dto, CancellationToken cancellationToken = default);
-        Task<BusinessResponse<TDto>> UpdateAsync(TDto dto, CancellationToken cancellationToken = default);
-        Task<BusinessResponse<TDto>> DeleteAsync(TKey id, CancellationToken cancellationToken = default);
-        Task<BusinessResponse<IEnumerable<TDto>>> GetAllAsync(CancellationToken cancellationToken = default);
-        Task<BusinessResponse<IEnumerable<TDto>>> FindAsync(Expression<Func<TDatabase, bool>> predicate, CancellationToken cancellationToken = default);
+        Task<BusinessResponse<TDomain>> GetByIdAsync(TKey id, CancellationToken cancellationToken = default);
+        Task<BusinessResponse<TDomain>> CreateAsync(TDomain domainModel, CancellationToken cancellationToken = default);
+        Task<BusinessResponse<TDomain>> UpdateAsync(TDomain domainModel, CancellationToken cancellationToken = default);
+        Task<BusinessResponse<TDomain>> DeleteAsync(TKey id, CancellationToken cancellationToken = default);
+        Task<BusinessResponse<IEnumerable<TDomain>>> GetAllAsync(CancellationToken cancellationToken = default);
+        Task<BusinessResponse<IEnumerable<TDomain>>> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
     }
 }

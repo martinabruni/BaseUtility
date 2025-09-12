@@ -1,6 +1,6 @@
 ﻿namespace BaseUtility
 {
-    public abstract class BaseDto<TKey> : IEntity<TKey>, IAuditable
+    public abstract class BaseDomain<TKey> : IEntity<TKey>, IAuditable
     {
         public required TKey Id { get; set; }
 
