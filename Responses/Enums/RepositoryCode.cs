@@ -10,6 +10,7 @@ namespace BaseUtility
         Unauthorized = HttpStatusCode.Unauthorized,
         Forbidden = HttpStatusCode.Forbidden,
         NotFound = HttpStatusCode.NotFound,
-        InternalServerError = HttpStatusCode.InternalServerError
+        InternalServerError = HttpStatusCode.InternalServerError,
+        NotImplemented = HttpStatusCode.NotImplemented,
     }
 }

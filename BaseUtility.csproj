@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net9.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<PackageId>BaseUtility</PackageId>
-		<Version>7.7.0</Version>
+		<Version>7.8.0</Version>
 		<Authors>Martina Bruni</Authors>
 		<Company>Author</Company>
-		<Description>Base utility library for .NET 8 projects.</Description>
+		<Description>Base utility library for .NET 9 projects.</Description>
 		<PackageOutputPath>..\Internal.FileConfess\nugets</PackageOutputPath>
 
 	</PropertyGroup>

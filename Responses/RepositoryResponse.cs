@@ -49,5 +49,11 @@
             StatusCode = RepositoryCode.Unauthorized,
             Message = message,
         };
+
+        public static RepositoryResponse<TData> NotImplemented(string? message = null) => new RepositoryResponse<TData>
+        {
+            StatusCode = RepositoryCode.NotImplemented,
+            Message = message,
+        };
     }
 }
