@@ -2,7 +2,7 @@
 
 namespace BaseUtility
 {
-    public class ApiResponse<TData>
+    public class ApiResponse<TData> : IResponse<TData, HttpStatusCode>
     {
         public TData? Data { get; set; }
         public string? Message { get; set; }

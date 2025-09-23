@@ -1,6 +1,7 @@
 ﻿namespace BaseUtility
 {
-    public class RepositoryResponse<TData>
+
+    public class RepositoryResponse<TData> : IResponse<TData, RepositoryCode>
     {
         public TData? Data { get; set; }
         public string? Message { get; set; }

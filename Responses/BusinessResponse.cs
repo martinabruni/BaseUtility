@@ -1,6 +1,6 @@
 ﻿namespace BaseUtility
 {
-    public class BusinessResponse<TData>
+    public class BusinessResponse<TData> : IResponse<TData, BusinessCode>
         where TData : class
     {
         public TData? Data { get; set; }
