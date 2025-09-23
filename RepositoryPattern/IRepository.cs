@@ -2,15 +2,14 @@
 
 namespace BaseUtility
 {
-    public interface IRepository<TEntity, TKey, TCode>
+    public interface IRepository<TEntity, TKey>
         where TEntity : class
-        where TCode : struct, Enum
     {
-        Task<IResponse<TEntity, TCode>> GetByIdAsync(TKey id, CancellationToken cancellationToken = default);
-        Task<IResponse<TEntity, TCode>> CreateAsync(TEntity entity, CancellationToken cancellationToken = default);
-        Task<IResponse<TEntity, TCode>> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default);
-        Task<IResponse<TEntity, TCode>> DeleteAsync(TKey id, CancellationToken cancellationToken = default);
-        Task<IResponse<IEnumerable<TEntity>, TCode>> GetAllAsync(CancellationToken cancellationToken = default);
-        Task<IResponse<IEnumerable<TEntity>, TCode>> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
+        Task<RepositoryResponse<TEntity>> GetByIdAsync(TKey id, CancellationToken cancellationToken = default);
+        Task<RepositoryResponse<TEntity>> CreateAsync(TEntity entity, CancellationToken cancellationToken = default);
+        Task<RepositoryResponse<TEntity>> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default);
+        Task<RepositoryResponse<TEntity>> DeleteAsync(TKey id, CancellationToken cancellationToken = default);
+        Task<RepositoryResponse<IEnumerable<TEntity>>> GetAllAsync(CancellationToken cancellationToken = default);
+        Task<RepositoryResponse<IEnumerable<TEntity>>> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
     }
 }
